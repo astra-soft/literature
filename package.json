@@ -1,0 +1,25 @@
+{
+	"name": "literature",
+	"version": "0.0.0",
+	"description": "",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "tsc",
+		"start": "node -r module-alias/register dist/index.js"
+	},
+	"author": "chyVacheck",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/module-alias": "^2.0.4",
+		"@types/node": "^22.1.0",
+		"typescript": "^5.5.4"
+	},
+	"dependencies": {
+		"module-alias": "^2.2.3"
+	},
+	"_moduleAliases": {
+		"@interfaces": "dist/interfaces/index.js",
+		"@models": "dist/models/index.js",
+		"@managers": "dist/managers/index.js"
+	}
+}
