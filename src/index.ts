@@ -1,6 +1,6 @@
 import 'module-alias/register';
 
-import { AuthorManager, BookManager, TomManager } from 'managers';
+import { AuthorManager, BookManager, TomManager } from '@managers';
 
 // Создадим менеджеры
 const bookManager = new BookManager();
