@@ -1,29 +1,18 @@
 // src/manager/tom.manager.ts
 
 // ? interface
-import { ITomManager, TId } from '@interfaces';
+import { ITom, ITomManager, TId } from '@interfaces';
 // ? model
 import { Tom } from '@models';
 // ? manager
-import { BookManager } from '@managers';
+import { BaseManager, BookManager } from '@managers';
 
-export class TomManager implements ITomManager {
-	private toms: Tom[] = [];
+export class TomManager extends BaseManager<ITom> implements ITomManager {
 	private bookManager: BookManager;
 
 	constructor(bookManager: BookManager) {
+		super();
 		this.bookManager = bookManager;
-	}
-
-	/**
-	 *
-	 * @returns next id for tom
-	 */
-	_generateId(): TId {
-		return this.toms.length > 0
-			? // take the last tom and increment his id by one
-			  this.toms[this.toms.length - 1].id + 1
-			: 1;
 	}
 
 	/**
@@ -32,33 +21,16 @@ export class TomManager implements ITomManager {
 	 * @param authorId - id of author
 	 * @returns book
 	 */
-	createOneTom(booksId: TId[], authorId: TId): Tom {
+	createOne(booksId: TId[], authorId: TId): Tom {
 		// Проверяем, что все книги существуют
 		booksId.forEach(bookId => {
-			if (!this.bookManager.getBookById(bookId)) {
+			if (!this.bookManager.getOneById(bookId)) {
 				throw new Error(`Book not found (Book ID: ${bookId})`);
 			}
 		});
 
 		const tom = new Tom(this._generateId(), booksId, authorId);
-		this.toms.push(tom);
+		this.entities.push(tom);
 		return tom;
-	}
-
-	/**
-	 * try to find tom by id
-	 * @param id - id of tom
-	 * @returns tom - or undefined
-	 */
-	getTomById(id: TId): Tom | undefined {
-		return this.toms.find(tom => tom.id === id);
-	}
-
-	/**
-	 *
-	 * @returns array of toms
-	 */
-	getAllToms(): Tom[] {
-		return this.toms;
 	}
 }

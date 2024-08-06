@@ -23,10 +23,8 @@ export interface IAuthorMeta {
 	countOfToms: number;
 }
 
-export interface IAuthorManager extends IBaseManager {
-	createOneAuthor(firstName: string, lastName: string): IAuthor;
-	getAuthorById(id: TId): IAuthor | undefined;
-	getAllAuthors(): IAuthor[];
+export interface IAuthorManager extends IBaseManager<IAuthor> {
+	createOne(firstName: string, lastName: string): IAuthor;
 	addBookToAuthorById(authorId: TId, bookId: TId): void;
 	addTomToAuthorById(authorId: TId, tomId: TId): void;
 }

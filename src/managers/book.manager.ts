@@ -1,24 +1,13 @@
 // src/managers/book.manager.ts
 
 // ? interfaces
-import { IBookManager, TId } from '@interfaces';
+import { IBook, IBookManager, TId } from '@interfaces';
+// ? managers
+import { BaseManager } from '@managers';
 // ? models
 import { Book } from '@models';
 
-export class BookManager implements IBookManager {
-	private books: Book[] = [];
-
-	/**
-	 *
-	 * @returns id - next id for book
-	 */
-	_generateId(): TId {
-		return this.books.length > 0
-			? // take the last book and increment his id by one
-			  this.books[this.books.length - 1].id + 1
-			: 1;
-	}
-
+export class BookManager extends BaseManager<IBook> implements IBookManager {
 	/**
 	 * create one new book
 	 * @param text - string
@@ -27,24 +16,7 @@ export class BookManager implements IBookManager {
 	 */
 	createOneBook(text: string, authorId: TId): Book {
 		const book = new Book(this._generateId(), text, authorId);
-		this.books.push(book);
+		this.entities.push(book);
 		return book;
-	}
-
-	/**
-	 * try to find book by id
-	 * @param id - id of book
-	 * @returns book - or undefined
-	 */
-	getBookById(id: TId): Book | undefined {
-		return this.books.find(book => book.id === id);
-	}
-
-	/**
-	 *
-	 * @returns array of books
-	 */
-	getAllBooks(): Book[] {
-		return this.books;
 	}
 }

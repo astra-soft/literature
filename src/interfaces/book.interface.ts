@@ -9,8 +9,6 @@ export interface IBook extends IBaseEntity {
 	authorId: TId;
 }
 
-export interface IBookManager extends IBaseManager {
+export interface IBookManager extends IBaseManager<IBook> {
 	createOneBook(text: string, authorId: TId): IBook;
-	getBookById(id: TId): IBook | undefined;
-	getAllBooks(): IBook[];
 }

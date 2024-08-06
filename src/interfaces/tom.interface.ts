@@ -9,8 +9,6 @@ export interface ITom extends IBaseEntity {
 	creationDate: Date;
 }
 
-export interface ITomManager extends IBaseManager {
-	createOneTom(booksId: TId[], authorId: TId): ITom;
-	getTomById(id: TId): ITom | undefined;
-	getAllToms(): ITom[];
+export interface ITomManager extends IBaseManager<ITom> {
+	createOne(booksId: TId[], authorId: TId): ITom;
 }
