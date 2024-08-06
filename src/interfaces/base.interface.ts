@@ -8,5 +8,9 @@ export interface IBaseEntity {
 }
 
 export interface IBaseManager {
-	_generateId: () => TId; // all managers need to have method to generate id
+	/**
+	 * all managers need to have method to generate id
+	 * @returns id - next id for entity
+	 */
+	_generateId: () => TId;
 }
