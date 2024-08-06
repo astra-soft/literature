@@ -1,37 +1,71 @@
 // src/managers/author.manager.ts
 
 // ? interfaces
-import { TId } from '@interfaces';
+import { IAuthor, TId, IAuthorManager } from '@interfaces';
 // ? models
 import { Author } from '@models';
 // ? managers
 import { BookManager, TomManager } from '@managers';
 
-export class AuthorManager {
-	private authors: Author[] = [];
+export class AuthorManager implements IAuthorManager {
+	private authors: IAuthor[] = [];
 	private bookManager: BookManager;
 	private tomManager: TomManager;
+
+	/**
+	 *
+	 * @returns id - next id for author
+	 */
+	_generateId(): TId {
+		return this.authors.length > 0
+			? // take the last author and increment his id by one
+			  this.authors[this.authors.length - 1].id + 1
+			: 1;
+	}
 
 	constructor(bookManager: BookManager, tomManager: TomManager) {
 		this.bookManager = bookManager;
 		this.tomManager = tomManager;
 	}
 
-	createAuthor(id: TId, firstName: string, lastName: string): Author {
-		const author = new Author(id, firstName, lastName);
+	/**
+	 * create a new one author
+	 * @param firstName - string, could be empty
+	 * @param lastName - string, could be empty
+	 * @returns author
+	 */
+	createOneAuthor(firstName: string, lastName: string): IAuthor {
+		const author = new Author(this._generateId(), firstName, lastName);
 		this.authors.push(author);
 		return author;
 	}
 
-	getAuthorById(id: TId): Author | undefined {
+	/**
+	 * get one author by his id from storage
+	 * @param id - unique identification
+	 * @returns author or undefined
+	 */
+	getAuthorById(id: TId): IAuthor | undefined {
 		return this.authors.find(author => author.id === id);
 	}
 
-	getAllAuthors(): Author[] {
-		return this.authors;
+	/**
+	 * get all authors from storage
+	 * @returns an array of authors
+	 */
+	getAllAuthors(): IAuthor[] {
+		// like request to dataBase
+		const authors = this.authors;
+
+		return authors;
 	}
 
-	addBookToAuthor(authorId: TId, bookId: TId) {
+	/**
+	 * add book to author
+	 * @param authorId - id of author
+	 * @param bookId - id of book
+	 */
+	addBookToAuthorById(authorId: TId, bookId: TId): void {
 		const author = this.getAuthorById(authorId);
 		const book = this.bookManager.getBookById(bookId);
 
@@ -44,7 +78,12 @@ export class AuthorManager {
 		}
 	}
 
-	addTomToAuthor(authorId: TId, tomId: TId) {
+	/**
+	 * add tom to author
+	 * @param authorId - id of author
+	 * @param tomId - id of tom
+	 */
+	addTomToAuthorById(authorId: TId, tomId: TId): void {
 		const author = this.getAuthorById(authorId);
 		const tom = this.tomManager.getTomById(tomId);
 
